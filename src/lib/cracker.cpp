@@ -40,7 +40,6 @@ void debugMatrixSlot(MarkableToken** matrix, int width, int height, TokenSlot sl
     }
 }
 */
-
 void recursion(
     MarkableToken** matrix, int width, int height, 
     TokenSlot slot, int currentSlotIdx, 
@@ -222,7 +221,6 @@ CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToke
     // Debug
     // debugMatrixSlot(matrix, width, height, mostRewardingSlot);
     // mostRewardingSlot.Debug();
-
 
     // Output
     CrackData solveData = {mostRewardingSlot, maxReward, clock() - startTime};
