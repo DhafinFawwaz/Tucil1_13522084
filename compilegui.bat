@@ -1,0 +1,1 @@
+pyinstaller --workpath="./bin/gui" --distpath="./bin/gui" "src/gui/gui.spec"

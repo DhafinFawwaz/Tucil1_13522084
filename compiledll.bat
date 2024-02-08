@@ -1,0 +1,1 @@
+g++ -shared -o "./src/gui/cracker.so" -fPIC "./src/lib/cracker.cpp" "./src/lib/structs/token.cpp" "./src/lib/structs/tokenslot.cpp" "./src/lib/structs/sequence.cpp"
