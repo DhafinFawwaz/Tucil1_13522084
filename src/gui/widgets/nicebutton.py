@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+from PyQt5.QtGui import QCursor
+from PyQt5.QtCore import Qt
 
 class NiceButton(QPushButton):
     # button color to blue
@@ -12,22 +14,19 @@ class NiceButton(QPushButton):
         super().__init__(parent)
         self.setStyleSheet("""
             QPushButton {
-                background-color: #3498db;
+                background-color: rgb(124, 58, 237);
                 color: white;
                 border-radius: 15px;
                 font-size: 17px;
                 font-weight: bold;
+                padding: 10px 20px;
             }
             QPushButton:hover {
-                background-color: #5dade2;
+                background-color: rgb(139, 92, 246);
                 color: white;
-                border-radius: 15px;
-                border: 2px solid #5dade2;
             }
             QPushButton:pressed {
-                background-color: #ec7063;
-                color: black;
-                border-radius: 15px;
-                border: 2px solid #ec7063;
+                background-color: rgb(91, 33, 182);
             }
         """)
+        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))

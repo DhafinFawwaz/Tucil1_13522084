@@ -4,6 +4,9 @@ class C_Token(Structure):
     _fields_ = [
         ("value", c_char * 2)
     ]
+    def __init__(self, value: str):
+        self.value = value.encode('utf-8')
+
 class C_MarkableToken(Structure):
     _fields_ = [
         ("token", C_Token),
@@ -14,7 +17,15 @@ class C_Sequence(Structure):
         ("count", c_int),
         ("reward", c_int),
         ("buffer", POINTER(C_Token)),
+        ("bufferSize", c_int)
     ]
+    def __init__(self, count: int, reward: int, buffer: list[C_Token], bufferSize: int):
+        self.count = count
+        self.reward = reward
+        self.buffer = buffer
+        self.bufferSize = bufferSize
+
+
 
 class C_TokenSlot(Structure):
     class C_TokenSlotData(Structure):
@@ -34,7 +45,6 @@ class C_CrackData(Structure):
         ("maxReward", c_int),
         ("executionDuration", c_int)
     ]
-
 
         
     # CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToken** matrix, int sequenceLength, Sequence sequence[])

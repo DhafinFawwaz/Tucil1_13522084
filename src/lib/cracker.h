@@ -6,6 +6,7 @@
 #include <string>
 #include <time.h>
 #include <stdio.h>
+#include <chrono>
 #include "structs/token.h"
 #include "structs/sequence.h"
 #include "structs/tokenslot.h"
@@ -39,6 +40,5 @@ extern "C" {
     CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToken** matrix, int sequenceLength, Sequence sequence[]);
     int test();
 }
-
 
 #endif

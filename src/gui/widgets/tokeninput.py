@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QSizePolicy, QLineEdit
 from PyQt5 import QtCore
 
-class NumberInput(QLineEdit):
+class TokenInput(QLineEdit):
     def __init__(self, parent: QWidget, value: int):
         super().__init__(parent)
         self.setStyleSheet("""
@@ -10,7 +10,7 @@ class NumberInput(QLineEdit):
                 font-size: 14px;
                 font-weight: bold;
                 background-color: rgb(30, 41, 59);
-                max-width: 100px;
+                max-width: 40px;
                 border-radius: 10px;
                 padding: 5px;
             }
@@ -19,15 +19,12 @@ class NumberInput(QLineEdit):
             }
         """)
         # left
-        self.setAlignment(QtCore.Qt.AlignLeft)
+        self.setAlignment(QtCore.Qt.AlignCenter)
         self.textChanged.connect(self.on_text_changed)
         self.old_text = ""
         
     def on_text_changed(self, text):
-
-        if text == "":
-            return
-        if not text.isdigit():
+        if len(text) > 2:
             self.setText(self.old_text)
         else:
             self.setText(text)

@@ -20,13 +20,13 @@ class Cracker:
         return Cracker.cracker.test()
 
     # CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToken** matrix, int sequenceLength, Sequence sequence[])
-    def getOptimalSolution(
-        bufferSize: int,
-        width: int,
-        height: int,
-        matrix: POINTER(POINTER(C_MarkableToken)),
-        sequence_length: int,
-        sequence: POINTER(C_Sequence)
-    ) -> C_CrackData:
-        return Cracker.cracker.getOptimalSolution(bufferSize, width, height, matrix, sequence_length, sequence)
+    # def getOptimalSolution(
+    #     bufferSize: int,
+    #     width: int,
+    #     height: int,
+    #     matrix: POINTER(POINTER(C_MarkableToken)),
+    #     sequence_length: int,
+    #     sequence: POINTER(C_Sequence)
+    # ) -> C_CrackData:
+    #     return Cracker.cracker.getOptimalSolution(bufferSize, width, height, matrix, sequence_length, sequence)
 

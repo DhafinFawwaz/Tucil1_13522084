@@ -171,35 +171,33 @@ void recursion(
 /// @return 
 CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToken** matrix, int sequenceLength, Sequence sequence[])
 {
-    /* Debug
     // Start Debug
-    cout << "Buffer size: " << bufferSize << endl;
-    cout << "Width: " << width << endl;
-    cout << "Height: " << height << endl;
-    cout << "Matrix: " << endl;
-    for(int i = 0; i < height; i++)
-    {
-        for(int j = 0; j < width; j++)
-        {
-            cout << matrix[i][j].token << " ";
-        }
-        cout << endl;
-    }
-    cout << "Sequence length: " << sequenceLength << endl;
-    cout << "Sequence: " << endl;
-    for(int i = 0; i < sequenceLength; i++)
-    {
-        int length = sequence[i].buffer.size();
-        for(int j = 0; j < length; j++)
-        {
-            cout << sequence[i].buffer[j] << " ";
-        }
-        cout << endl;
-        cout << sequence[i].reward << endl;
-    }
-    cout << endl;
+    // cout << "Buffer size: " << bufferSize << endl;
+    // cout << "Width: " << width << endl;
+    // cout << "Height: " << height << endl;
+    // cout << "Matrix: " << endl;
+    // for(int i = 0; i < height; i++)
+    // {
+    //     for(int j = 0; j < width; j++)
+    //     {
+    //         cout << matrix[i][j].token << " ";
+    //     }
+    //     cout << endl;
+    // }
+    // cout << "Sequence length: " << sequenceLength << endl;
+    // cout << "Sequence: " << endl;
+    // for(int i = 0; i < sequenceLength; i++)
+    // {
+    //     int length = sequence[i].bufferSize;
+    //     for(int j = 0; j < length; j++)
+    //     {
+    //         cout << sequence[i].buffer[j] << " ";
+    //     }
+    //     cout << endl;
+    //     cout << sequence[i].reward << endl;
+    // }
+    // cout << endl;
     // End Debug
-    */ 
 
     clock_t startTime = clock();
 
@@ -226,7 +224,6 @@ CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToke
     CrackData solveData = {mostRewardingSlot, maxReward, clock() - startTime};
     return solveData;
 }
-
 int test()
 {
     return 43;

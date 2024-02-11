@@ -3,6 +3,7 @@
 #include <string>
 #include <time.h>
 #include <stdio.h>
+#include <cstdlib>
 #include "../lib/cracker.h"
 using namespace std;
 
@@ -94,16 +95,14 @@ void startByTyping()
     {
         cin.ignore();
         getline(cin, line);
-        sequence[i].count = 1;
         Token t = {line[0], line[1]};
-        sequence[i].buffer.push_back(t);
+        sequence[i].push_back(t);
         int lineLength = line.length();
         int j = 3;
         while(j < lineLength)
         {
             Token t = {line[j], line[j+1]};
-            sequence[i].buffer.push_back(t);
-            sequence[i].count++;
+            sequence[i].push_back(t);
             j += 3;
         }
         cin >> sequence[i].reward;
@@ -157,16 +156,14 @@ void startByPath(string path)
     for(int i = 0; i < sequenceLength; i++)
     {
         getline(file, line);
-        sequence[i].count = 1;
         Token t = {line[0], line[1]};
-        sequence[i].buffer.push_back(t);
+        sequence[i].push_back(t);
         int lineLength = line.length();
         int j = 3;
         while(j < lineLength)
         {
             Token t = {line[j], line[j+1]};
-            sequence[i].buffer.push_back(t);
-            sequence[i].count++;
+            sequence[i].push_back(t);
             j += 3;
         }
 
@@ -181,9 +178,173 @@ void startByPath(string path)
     askForSavingOutput(data);
 }
 
+#define amountOfUniqueTokensStr "Amount of Unique Tokens: "
+#define possibleTokensStr "Possible Tokens: "
+#define bufferSizeStr "Buffer Size: "
+#define matrixDimensionStr "Matrix Dimension (width height): "
+#define sequenceAmountStr "Amount of Sequence: "
+#define maximalSequenceLengthStr "Maximal Sequence Length: "
+#define generatedMatrixStr "Generated Matrix: "
+
+int randomRange(int min, int max)
+{
+    return rand() % (max - min + 1) + min;
+}
+
+bool isSequenceExistInListOfSequence(Sequence sequence, Sequence* sequenceList, int sequenceListLength)
+{
+    for(int i = 0; i < sequenceListLength; i++)
+    {
+        if(!sequence.isEqual(sequenceList[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void startByAutoGenerateInput()
+{
+    // jumlah_token_unik
+    cout << amountOfUniqueTokensStr << endl;
+    int uniqueTokenCount;
+    cin >> uniqueTokenCount;
+    
+    // token
+    cout << possibleTokensStr << endl;
+    Token possibleTokens[uniqueTokenCount];
+    for(int i = 0; i < uniqueTokenCount; i++)
+    {
+        char c[2];
+        cin >> c;
+        possibleTokens[i] = {c[0], c[1]};
+    }
+
+    // ukuran_buffer
+    cout << bufferSizeStr;
+    int bufferSize;
+    cin >> bufferSize;
+
+    // ukuran_matriks
+    cout << matrixDimensionStr << endl;
+    int width, height;
+    cin >> width >> height;
+
+    // jumlah_sekuens
+    cout << sequenceAmountStr;
+    int sequenceAmount;
+    cin >> sequenceAmount;
+
+    // ukuran_maksimal_sekuens
+    cout << maximalSequenceLengthStr;
+    int maxSequenceLength;
+    int minSequenceLength = 2;
+    cin >> maxSequenceLength;
+
+    // generate matrix
+    MarkableToken** matrix;
+    matrix = new MarkableToken*[height];
+
+    // seed random
+    srand(time(NULL));
+
+    // generate matrix
+    cout << generatedMatrixStr << endl;
+    for(int i = 0; i < height; i++)
+    {
+        matrix[i] = new MarkableToken[width];
+        for(int j = 0; j < width; j++)
+        {
+            int randomIndex = rand() % uniqueTokenCount;
+            matrix[i][j].token = possibleTokens[randomIndex];
+            matrix[i][j].isMarked = false;
+
+            cout << matrix[i][j].token << ' ';
+        }
+        cout << endl;
+    }
+
+    // generate sequence
+    Sequence sequence[sequenceAmount];
+    int i = 0;
+    while(i < sequenceAmount)
+    {
+        int sequenceLength = randomRange(minSequenceLength, maxSequenceLength);
+        for(int j = 0; j < sequenceLength; j++)
+        {
+            int randomIndex = rand() % uniqueTokenCount;
+            sequence[i].push_back(possibleTokens[randomIndex]);
+        }
+        // unique check
+        if(isSequenceExistInListOfSequence(sequence[i], sequence, sequenceLength))
+        {
+            continue;
+        }
+
+        cout << "Sequence" << i << ':' << endl;
+        for(int j = 0; j < sequenceLength; j++)
+        {
+            cout << sequence[i].buffer[j] << ' ';
+        }
+        cout << endl;
+        // range reward 10 - 50
+        int reward = randomRange(10, 50);
+        sequence[i].reward = reward;
+        cout << "reward: " << reward << endl;
+        i++;
+    }        
+
+    CrackData data = getOptimalSolution(bufferSize, width, height, matrix, sequenceAmount, sequence);
+    printSolveData(data);
+    askForSavingOutput(data);
+}
+
+
+#define titleStr "Cyberpunk 2077 Breach Protocol Cracker"
+#define chooseOptionStr "Choose option (number): "
+#define option1Str "1. Input by typing manually"
+#define option2Str "2. Input from file"
+#define option3Str "3. Auto generate input"
+#define option4Str "4. Exit"
+
+void cliScreen()
+{
+    cout << titleStr << endl << endl;
+    cout << option1Str << endl;
+    cout << option2Str << endl;
+    cout << option3Str << endl;
+    cout << option4Str << endl;
+    cout << endl << chooseOptionStr;
+
+    int option = 0;
+    while(!(option >= 1 && option <= 3))
+    {
+        cin >> option;
+        if(option == 1) startByTyping();
+        else if(option == 2)
+        {
+            string path;
+            cout << "File path: ";
+            cin >> path;
+            startByPath(path);
+        }
+        else if(option == 3) startByAutoGenerateInput();
+        else if(option == 4) return;
+        else if(!cin.good())
+        {
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cout << "Please input a number!: ";
+        }
+        else cout << "Please choose between range 1 - 3!: ";
+    }
+}
+
+
 int main(int argc, char* argv[])
 {
+    // from file
     if(argc > 1) startByPath(argv[1]);
-    else startByTyping();
+    else cliScreen();
     return 0;
 }

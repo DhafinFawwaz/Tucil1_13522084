@@ -1,4 +1,8 @@
 import sys
+from time import time
+from models.token_types import Token, MarkableToken, Sequence, TokenSlot, CrackData
+from models.custom_c_types import C_Token, C_MarkableToken, C_Sequence, C_TokenSlot, C_CrackData
+from ctypes import cdll, CDLL, c_void_p, c_int, c_float, c_double, POINTER, c_char_p, c_bool, c_char, Structure
 
 from models.cracker import Cracker
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QMainWindow, QSizePolicy, QGridLayout, QLabel
@@ -8,13 +12,14 @@ from PyQt5 import QtCore
 from widgets.nicebutton import NiceButton
 from widgets.normaltext import NormalText
 from widgets.numberinput import NumberInput
+from widgets.matrixinput import MatrixInput
 from data.data import Data
 
 class Window(QWidget):
     def __init__(self):
         super().__init__()
         self.setStyleSheet("""
-            background-color: #222;
+            background-color: rgb(2, 6, 23);
             color: white;
             font-size: 17px;
             font-weight: bold;
@@ -40,6 +45,7 @@ class Window(QWidget):
         buffer_size_h_layout.addStretch()
         v_layout.addLayout(buffer_size_h_layout)
 
+        # width, height
         dimension_h_layout = QHBoxLayout()
         dimension_h_layout.setAlignment(QtCore.Qt.AlignLeft)
         width_label = NormalText(None, "Width: ")
@@ -54,53 +60,87 @@ class Window(QWidget):
         v_layout.addLayout(dimension_h_layout)
 
         # matrix
+        matrix_label = NormalText(None, "Tokens: ")
+        v_layout.addWidget(matrix_label)
+        matrix_h_layout = QHBoxLayout()
+        matrix_input = MatrixInput(None, 5, 5)
+        matrix_h_layout.addWidget(matrix_input)
+        matrix_h_layout.addStretch()
+        v_layout.addLayout(matrix_h_layout)
 
         # sequence_amount_input
 
-        
+        button_h_layout = QHBoxLayout()
+        button = NiceButton(None)
+        button.setText("Calculate")
+        v_layout.addWidget(button)
+        button_h_layout.addWidget(button)
+        v_layout.addLayout(button_h_layout)
+
+                
 
 
         v_layout.addStretch()
 
-        # def on_button_clicked():
+        def on_button_clicked():
             
-            # button.setText(str(Cracker.test()))
+            button.setText(str(Cracker.test()))
             # return
 
-            # buffer_size: int = 7
-            # width: int = 6
-            # height: int = 6
+            buffer_size: int = 7
+            width: int = 6
+            height: int = 6
 
-            # matrix_data = [
-            #     ["7A", "55", "E9", "E9", "1C", "55"],
-            #     ["55", "7A", "1C", "7A", "E9", "55"],
-            #     ["55", "1C", "1C", "55", "E9", "BD"],
-            #     ["BD", "1C", "7A", "1C", "55", "BD"],
-            #     ["BD", "55", "BD", "7A", "1C", "1C"],
-            #     ["1C", "55", "55", "7A", "55", "7A"],
-            # ]
+            matrix_data = [
+                ["7A", "55", "E9", "E9", "1C", "55"],
+                ["55", "7A", "1C", "7A", "E9", "55"],
+                ["55", "1C", "1C", "55", "E9", "BD"],
+                ["BD", "1C", "7A", "1C", "55", "BD"],
+                ["BD", "55", "BD", "7A", "1C", "1C"],
+                ["1C", "55", "55", "7A", "55", "7A"],
+            ]
+            matrix_data_c_p = (POINTER(C_MarkableToken) * height)()
+            for i in range(height):
+                matrix_data_c_p[i] = (C_MarkableToken * width)()
+                for j in range(width):
+                    matrix_data_c_p[i][j] = C_MarkableToken(C_Token(matrix_data[i][j]), False)
 
-            # matrix: list[list[MarkableToken]] = []
-            # for i in range(height):
-            #     matrix.append([])
-            #     for j in range(width):
-            #         matrix[i].append(MarkableToken(matrix_data[i][j], False))
-            # print(matrix)
-
-            # sequence_length: int = 3
             
-            # sequence = [
-            #     ["BD", "E9", "1C"],
-            #     ["BD", "7A", "BD"],
-            #     ["BD", "1C", "BD", "55"],
-            # ]
-            # # sequence_reward = [15, 20, 30]
 
+            sequence = [
+                ["BD", "E9", "1C"],
+                ["BD", "7A", "BD"],
+                ["BD", "1C", "BD", "55"],
+            ]
+            sequence_length = len(sequence)
+            sequence_reward = [15, 20, 30]
+            sequence_c_p = (C_Sequence * sequence_length)()
+            for i in range(sequence_length):
+                length = len(sequence[i])
+                token_sequence = (C_Token * length)()
+                for j in range(length):
+                    token_sequence[j] = C_Token(sequence[i][j])
+                sequence_c_p[i] = C_Sequence(length, sequence_reward[i], token_sequence, length)
 
-            # crack_data = Cracker.getOptimalSolution(buffer_size, width, height, matrix, sequence_length, sequence)
+            start_time = time()
+            crack_data_c = Cracker.cracker.getOptimalSolution(
+                buffer_size,
+                width,
+                height,
+                matrix_data_c_p,
+                sequence_length,
+                sequence_c_p
+            )
+            crack_data = CrackData(crack_data_c)
+            print("Execution Time C: ", crack_data.executionDuration, "ms")
 
-            # print("clicked")
-        # button.clicked.connect(on_button_clicked)
+            print("max reward", crack_data.maxReward)
+            for i in range(crack_data.mostRewardingSlot.bufferSize):
+                print(crack_data.mostRewardingSlot.slotList[i].x, crack_data.mostRewardingSlot.slotList[i].y, crack_data.mostRewardingSlot.slotList[i].token.value)
+
+            
+
+        button.clicked.connect(on_button_clicked)
 
 
 if __name__ == "__main__":
