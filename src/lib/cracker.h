@@ -6,7 +6,7 @@
 #include <string>
 #include <time.h>
 #include <stdio.h>
-#include <chrono>
+#include <limits.h>
 #include "structs/token.h"
 #include "structs/sequence.h"
 #include "structs/tokenslot.h"

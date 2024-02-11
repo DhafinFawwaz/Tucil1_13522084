@@ -54,6 +54,7 @@ void recursion(
     // khusus for loop paling dalam, atau slot paling kanan
     if(currentSlotIdx == slot.bufferSize)
     {      
+        slot.filledSlot = currentSlotIdx;
         int currentTotalReward = slot.calculateReward(sequence, sequenceLength);
         if(currentTotalReward > *maxReward)
         {
@@ -87,7 +88,7 @@ void recursion(
             if(matrix[posY][j].isMarked) continue;
 
             // everytime a new mark is set, the previous needs to be unset. Like swapping
-            // happens when backtracking. indexHasBeenFilled just to make sure the value is initialized
+            // indexHasBeenFilled just to make sure the value is initialized
             if(slot.indexHasBeenFilled(currentSlotIdx))
                 matrix[slot.slotList[currentSlotIdx].y][slot.slotList[currentSlotIdx].x].isMarked = false;
             
@@ -137,6 +138,7 @@ void recursion(
     }
 
     // base case khusus ga ada jalur lagi
+    slot.filledSlot = currentSlotIdx;
     int currentTotalReward = slot.calculateReward(sequence, sequenceLength);
     if(currentTotalReward > *maxReward)
     {
@@ -203,7 +205,7 @@ CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToke
 
     TokenSlot mostRewardingSlot(bufferSize);
     TokenSlot slot(bufferSize);
-    int maxReward = -1;
+    int maxReward = INT_MIN;
 
     // Start from horizontal
     recursion(

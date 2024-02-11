@@ -9,6 +9,7 @@ struct TokenSlotData{
 
 TokenSlot::TokenSlot(int length)
 {
+    filledSlot = 0;
     bufferSize = length;
     slotList = new TokenSlotData[length];
     for(int i = 0; i < length; i++)
@@ -43,7 +44,7 @@ int TokenSlot::calculateReward(Sequence sequence[], int sequenceAmount)
 int TokenSlot::getReward(Sequence sequence)
 {
     // loop through slot
-    for(int i = 0; i < bufferSize - sequence.count + 1; i++)
+    for(int i = 0; i < filledSlot - sequence.count + 1; i++)
     {
         // check the first element of sequence that's equal
         if(slotList[i].token == sequence.buffer[0])
@@ -68,6 +69,7 @@ int TokenSlot::getReward(Sequence sequence)
 void TokenSlot::CopyFrom(TokenSlot slot)
 {
     bufferSize = slot.bufferSize;
+    filledSlot = slot.filledSlot;
     for(int i = 0; i < bufferSize; i++)
     {
         slotList[i].token = slot.slotList[i].token;

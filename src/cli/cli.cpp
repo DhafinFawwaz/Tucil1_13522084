@@ -15,12 +15,12 @@ void saveToPath(CrackData data, string path)
     // same as printSolveData but to file
     ofstream file(path);
     file << data.maxReward << endl;
-    for(int i = 0; i < data.mostRewardingSlot.bufferSize; i++)
+    for(int i = 0; i < data.mostRewardingSlot.filledSlot; i++)
     {
         file << data.mostRewardingSlot.slotList[i].token << ' ';
     }
     file << endl;
-    for(int i = 0; i < data.mostRewardingSlot.bufferSize; i++)
+    for(int i = 0; i < data.mostRewardingSlot.filledSlot; i++)
     {
         // plus 1 because it started from 1
         file << data.mostRewardingSlot.slotList[i].x + 1 << ", " << data.mostRewardingSlot.slotList[i].y + 1 << endl;
@@ -33,14 +33,15 @@ void saveToPath(CrackData data, string path)
 /// @param data 
 void askForSavingOutput(CrackData data)
 {
-    cout << endl << "Apakah ingin menyimpan solusi? (y/n)" << endl;
+    cout << endl << "Apakah ingin menyimpan solusi? (y/n): ";
     char c; cin >> c;
-    if(c == 'y')
+    if(c == 'y' || c == 'Y')
     {
         string savePath;
-        cout << "Masukkan path output" << endl;
+        cout << "Enter save path (Ex: test/output/test100.txt) " << endl;
         cin >> savePath;
         saveToPath(data, savePath);
+        cout << endl;
     }
 }
 
@@ -49,12 +50,12 @@ void askForSavingOutput(CrackData data)
 void printSolveData(CrackData data)
 {   
     cout << data.maxReward << endl;
-    for(int i = 0; i < data.mostRewardingSlot.bufferSize; i++)
+    for(int i = 0; i < data.mostRewardingSlot.filledSlot; i++)
     {
         cout << data.mostRewardingSlot.slotList[i].token << ' ';
     }
     cout << endl;
-    for(int i = 0; i < data.mostRewardingSlot.bufferSize; i++)
+    for(int i = 0; i < data.mostRewardingSlot.filledSlot; i++)
     {
         // plus 1 because it started from 1
         cout << data.mostRewardingSlot.slotList[i].x + 1 << ", " << data.mostRewardingSlot.slotList[i].y + 1 << endl;
@@ -107,8 +108,10 @@ void startByTyping()
         }
         cin >> sequence[i].reward;
     }
+    cout << endl << "Processing..." << endl << endl;
 
     CrackData data = getOptimalSolution(bufferSize, width, height, matrix, sequenceLength, sequence);
+    cout << "Result:" << endl;
     printSolveData(data);
     askForSavingOutput(data);
 }
@@ -172,8 +175,10 @@ void startByPath(string path)
     }
 
     file.close();
+    cout << endl << "Processing..." << endl << endl;
 
     CrackData data = getOptimalSolution(bufferSize, width, height, matrix, sequenceLength, sequence);
+    cout << "Result:" << endl;
     printSolveData(data);
     askForSavingOutput(data);
 }
@@ -215,9 +220,7 @@ void startByAutoGenerateInput()
     Token possibleTokens[uniqueTokenCount];
     for(int i = 0; i < uniqueTokenCount; i++)
     {
-        char c[2];
-        cin >> c;
-        possibleTokens[i] = {c[0], c[1]};
+        cin >> possibleTokens[i].value;
     }
 
     // ukuran_buffer
@@ -249,7 +252,7 @@ void startByAutoGenerateInput()
     srand(time(NULL));
 
     // generate matrix
-    cout << generatedMatrixStr << endl;
+    cout << endl << generatedMatrixStr << endl;
     for(int i = 0; i < height; i++)
     {
         matrix[i] = new MarkableToken[width];
@@ -281,7 +284,7 @@ void startByAutoGenerateInput()
             continue;
         }
 
-        cout << "Sequence" << i << ':' << endl;
+        cout << endl << "Sequence " << i << ':' << endl;
         for(int j = 0; j < sequenceLength; j++)
         {
             cout << sequence[i].buffer[j] << ' ';
@@ -290,11 +293,13 @@ void startByAutoGenerateInput()
         // range reward 10 - 50
         int reward = randomRange(10, 50);
         sequence[i].reward = reward;
-        cout << "reward: " << reward << endl;
+        cout << "Reward: " << reward << endl;
         i++;
     }        
+    cout << endl << "Processing..." << endl << endl;
 
     CrackData data = getOptimalSolution(bufferSize, width, height, matrix, sequenceAmount, sequence);
+    cout << "Result:" << endl;
     printSolveData(data);
     askForSavingOutput(data);
 }

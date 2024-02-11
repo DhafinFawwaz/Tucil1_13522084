@@ -11,6 +11,7 @@ struct TokenSlot{
         int y;
     };
 
+    int filledSlot;
     int bufferSize;
     TokenSlotData* slotList;
 
@@ -28,6 +29,7 @@ struct TokenSlot{
     /// @param sequence the sequence (has reward) to check inside slot
     /// @return 0 if the sequence doesn't exist in the slot. sequence.reward if its found. 
     int getReward(Sequence sequence);
+    int getReward_v2(Sequence sequence, int maxIdxTocheck);
     void CopyFrom(TokenSlot slot);
     void Debug();
 };
