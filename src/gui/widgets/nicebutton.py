@@ -17,7 +17,7 @@ class NiceButton(QPushButton):
                 background-color: rgb(124, 58, 237);
                 color: white;
                 border-radius: 15px;
-                font-size: 17px;
+                font-size: 15px;
                 font-weight: bold;
                 padding: 10px 20px;
             }

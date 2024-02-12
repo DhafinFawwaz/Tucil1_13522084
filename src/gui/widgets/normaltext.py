@@ -6,6 +6,7 @@ class NormalText(QLabel):
         super().__init__(parent)
         self.setStyleSheet("""
             QLabel {
+                background-color: transparent;
                 color: white;
                 font-size: 14px;
                 font-weight: bold;

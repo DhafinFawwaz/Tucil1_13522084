@@ -2,15 +2,16 @@ from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QSizePolicy, QLineEdi
 from PyQt5 import QtCore
 
 class NumberInput(QLineEdit):
+    
     def __init__(self, parent: QWidget, value: int):
         super().__init__(parent)
         self.setStyleSheet("""
             QLineEdit {
+                background-color: transparent;
                 color: white;
                 font-size: 14px;
                 font-weight: bold;
                 background-color: rgb(30, 41, 59);
-                max-width: 100px;
                 border-radius: 10px;
                 padding: 5px;
             }
@@ -22,14 +23,31 @@ class NumberInput(QLineEdit):
         self.setAlignment(QtCore.Qt.AlignLeft)
         self.textChanged.connect(self.on_text_changed)
         self.old_text = ""
-        
+        self.allow_negative = True
+
+    def set_allow_negative(self, allow_negative: bool):
+        self.allow_negative = allow_negative
+
+
     def on_text_changed(self, text):
 
         if text == "":
             return
-        if not text.isdigit():
-            self.setText(self.old_text)
+        if text.isdigit() or (text == '-') or (text[0] == '-' and text[1:].isdigit()):
+            if self.allow_negative:
+                self.setText(text)
+                self.old_text = text
+            else:
+                if len(text) == 1 and text == '-':
+                    self.setText(self.old_text)
+                    return
+
+                val = int(text)
+                if(val >= 0): # not self.allow_negative and 
+                    self.setText(text)
+                    self.old_text = text
+                elif(val < 0): # not self.allow_negative and 
+                    self.setText(self.old_text)
         else:
-            self.setText(text)
-            self.old_text = text
+            self.setText(self.old_text)
         

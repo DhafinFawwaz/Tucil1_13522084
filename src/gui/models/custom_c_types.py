@@ -36,6 +36,7 @@ class C_TokenSlot(Structure):
         ]
     _fields_ = [
         ("bufferSize", c_int),
+        ("filledSlot", c_int),
         ("slotList", POINTER(C_TokenSlotData))
     ]
 

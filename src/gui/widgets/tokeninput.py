@@ -10,7 +10,7 @@ class TokenInput(QLineEdit):
                 font-size: 14px;
                 font-weight: bold;
                 background-color: rgb(30, 41, 59);
-                max-width: 40px;
+                max-width: 25px;
                 border-radius: 10px;
                 padding: 5px;
             }
