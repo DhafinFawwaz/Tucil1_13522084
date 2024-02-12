@@ -43,6 +43,7 @@ class SequenceInputList(QWidget):
             input.setParent(None)
         
         self.length = new_length
+        self.inputs = []
         for i in range(self.length):
             sequence_input = SequenceInput(None)
             self.v_layout.addWidget(sequence_input)

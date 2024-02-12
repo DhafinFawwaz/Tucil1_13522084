@@ -67,6 +67,8 @@ class SequenceInput(QWidget):
 
         self.sequence_layout = QHBoxLayout()
         self.h_layout.addLayout(self.sequence_layout)
+
+        self.inputs: list[TokenInput] = []
         
         self.set_sequence_length(self.count)
 
@@ -82,14 +84,16 @@ class SequenceInput(QWidget):
             
 
         self.count = new_length
+        self.inputs = []
 
         for i in range(self.count):
-            token_input = TokenInput(None, "FF")
+            token_input = TokenInput(self, "FF")
             self.sequence_layout.addWidget(token_input)
+            self.inputs.append(token_input)
         self.sequence_layout.addStretch()
-    
+
     def get_element(self, i: int) -> str:
-        return self.sequence_layout.itemAt(i).widget().text()
+        return self.inputs[i].text()
 
     def get_sequence_c(self) -> Array[C_Token]:
         token_sequence = (C_Token * self.count)()

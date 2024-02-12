@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QSizePolicy, QLineEdi
 from PyQt5 import QtCore
 
 class TokenInput(QLineEdit):
-    def __init__(self, parent: QWidget, value: int):
+    def __init__(self, parent: QWidget, value: str):
         super().__init__(parent)
         self.setStyleSheet("""
             QLineEdit {

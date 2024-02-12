@@ -209,40 +209,8 @@ class Window(QWidget):
             width: int = self.matrix_input.matrix_width
             height: int = self.matrix_input.matrix_height
 
-
-
-            # matrix_data = [
-            #     ["7A", "55", "E9", "E9", "1C", "55"],
-            #     ["55", "7A", "1C", "7A", "E9", "55"],
-            #     ["55", "1C", "1C", "55", "E9", "BD"],
-            #     ["BD", "1C", "7A", "1C", "55", "BD"],
-            #     ["BD", "55", "BD", "7A", "1C", "1C"],
-            #     ["1C", "55", "55", "7A", "55", "7A"],
-            # ]
-            # matrix_data_c_p = (POINTER(C_MarkableToken) * height)()
-            # for i in range(height):
-            #     matrix_data_c_p[i] = (C_MarkableToken * width)()
-            #     for j in range(width):
-            #         matrix_data_c_p[i][j] = C_MarkableToken(C_Token(matrix_data[i][j]), False)
             matrix_data_c_p = self.matrix_input.get_matrix_c()
 
-            
-
-            # sequence = [
-            #     ["BD", "E9", "1C"],
-            #     ["BD", "7A", "BD"],
-            #     ["BD", "1C", "BD", "55"],
-            # ]
-            # sequence_length = len(sequence)
-            # sequence_reward = [15, 20, 30]
-            # sequence_c_p = (C_Sequence * sequence_length)()
-            # for i in range(sequence_length):
-            #     length = len(sequence[i])
-            #     token_sequence = (C_Token * length)()
-            #     for j in range(length):
-            #         token_sequence[j] = C_Token(sequence[i][j])
-            #     sequence_c_p[i] = C_Sequence(length, sequence_reward[i], token_sequence, length)
-            
             sequence_c_p = self.sequence_input_list.get_sequence_c()
 
             crack_data_c = Cracker.cracker.getOptimalSolution(
