@@ -9,8 +9,9 @@ from ctypes import cdll, CDLL, c_void_p, c_int, c_float, c_double, POINTER, c_ch
 class MatrixInput(QWidget):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
-        self.matrix_height = 5
-        self.matrix_width = 7
+        self.matrix_height = 3
+        self.matrix_width = 6
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         spacing = 10
 

@@ -3,6 +3,8 @@ from models.custom_c_types import C_CrackData
 class Token():
     def __init__(self, value: str):
         self.value: str = value
+    def byteToStr(b: bytes):
+        return str(b.decode("utf-8"))
 
 class MarkableToken():
     def __init__(self, token: Token, isMarked: bool):

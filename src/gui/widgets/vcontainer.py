@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QBoxLayout, QSizePolicy
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt
 from widgets.normaltext import NormalText
@@ -21,6 +21,7 @@ class VContainer(QWidget):
                 padding: 10px 20px;
             }
         """)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.setAttribute(QtCore.Qt.WA_StyledBackground, True)
         self.v_layout = QVBoxLayout()
         self.setLayout(self.v_layout)

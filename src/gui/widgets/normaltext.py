@@ -13,3 +13,24 @@ class NormalText(QLabel):
             }
         """)
         self.setText(text)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+    def set_default_style(self):
+        self.setStyleSheet("""
+            QLabel {
+                background-color: transparent;
+                color: white;
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)
+
+    def set_error_style(self):
+        self.setStyleSheet("""
+            QLabel {
+                background-color: transparent;
+                color: red;
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)

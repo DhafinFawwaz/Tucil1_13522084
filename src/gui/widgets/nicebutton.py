@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QSizePolicy
 from PyQt5.QtGui import QCursor
 from PyQt5.QtCore import Qt
 
@@ -30,3 +30,4 @@ class NiceButton(QPushButton):
             }
         """)
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)

@@ -56,7 +56,7 @@ class SequenceInput(QWidget):
         self.count_label = NormalText(None, "Length: ")
         self.count_input = NumberInput(None, 0)
         self.count_input.setText(str(self.count))
-        self.count_input.set_allow_negative(False)
+        self.count_input.set_allow_negative_or_zero(False)
         self.count_input.setFixedWidth(40)
         self.h_layout.addWidget(self.count_label)
         self.h_layout.addWidget(self.count_input)
