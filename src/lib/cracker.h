@@ -38,7 +38,6 @@ void recursion(
 
 extern "C" {
     CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToken** matrix, int sequenceLength, Sequence sequence[]);
-    int test();
 }
 
 #endif

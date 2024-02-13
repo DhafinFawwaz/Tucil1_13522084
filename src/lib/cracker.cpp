@@ -126,7 +126,3 @@ CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToke
     CrackData solveData = {mostRewardingSlot, maxReward, clock() - startTime};
     return solveData;
 }
-int test()
-{
-    return 43;
-}
