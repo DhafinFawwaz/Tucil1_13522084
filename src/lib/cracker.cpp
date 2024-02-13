@@ -1,45 +1,6 @@
 #include "cracker.h"
 using namespace std;
 
-
-/*
-void debug(MarkableToken** matrix, int width, int height)
-{
-    for(int i = 0; i < height; i++)
-    {
-        cout << "[ ";
-        for(int j = 0; j < width; j++)
-        {
-            if(matrix[i][j].isMarked) cout << "\033[0;32m" << matrix[i][j].token << "\033[0;37m ";
-            else cout << matrix[i][j].token << " ";
-        }
-        cout << "]" << endl;
-    }
-}
-
-void debugMatrixSlot(MarkableToken** matrix, int width, int height, TokenSlot slot)
-{
-    for(int i = 0; i < height; i++)
-    {
-        cout << "[ ";
-        for(int j = 0; j < width; j++)
-        {
-            bool isFound = false;
-            for(int k = 0; k < slot.bufferSize; k++)
-            {
-                if(slot.slotList[k].x == j && slot.slotList[k].y == i)
-                {
-                    cout << "\033[0;32m" << matrix[i][j].token << "\033[0;37m ";
-                    isFound = true;
-                    break;
-                }
-            }
-            if(!isFound) cout << matrix[i][j].token << " ";
-        }
-        cout << "]" << endl;
-    }
-}
-*/
 void recursion(
     MarkableToken** matrix, int width, int height, 
     TokenSlot slot, int currentSlotIdx, 
@@ -62,21 +23,6 @@ void recursion(
             *maxReward = currentTotalReward;
         }
 
-        // Debug
-        // cout << "======== base ========" << endl;
-        // debug(matrix, width, height);
-        // cout << "curr: " << currentTotalReward << endl;
-        // slot.Debug();
-        // cout << "max: " << *maxReward << endl;
-        // (*mostRewardingSlot).Debug();
-        // for(int i = 0; i < sequenceLength; i++)
-        // {
-        //     sequence[i].Debug();
-        // }
-        // string temp;
-        // cin >> temp;
-        // cout << "==============" << endl;        
-        
         return;
     }
 
@@ -146,21 +92,6 @@ void recursion(
         *maxReward = currentTotalReward;
     }
 
-    // Debug
-    // cout << "======== end ========" << endl;
-    // debug(matrix, width, height);
-    // cout << "curr: " << currentTotalReward << endl;
-    // slot.Debug();
-    // cout << "max: " << *maxReward << endl;
-    // (*mostRewardingSlot).Debug();
-    // for(int i = 0; i < sequenceLength; i++)
-    // {
-    //     sequence[i].Debug();
-    // }
-    // string temp;
-    // cin >> temp;
-    // cout << "==============" << endl;
-    
 }
 
 /// @brief Get the result packed inside SolveData for passing data outside dll
@@ -173,34 +104,7 @@ void recursion(
 /// @return 
 CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToken** matrix, int sequenceLength, Sequence sequence[])
 {
-    // Start Debug
-    // cout << "Buffer size: " << bufferSize << endl;
-    // cout << "Width: " << width << endl;
-    // cout << "Height: " << height << endl;
-    // cout << "Matrix: " << endl;
-    // for(int i = 0; i < height; i++)
-    // {
-    //     for(int j = 0; j < width; j++)
-    //     {
-    //         cout << matrix[i][j].token << " ";
-    //     }
-    //     cout << endl;
-    // }
-    // cout << "Sequence length: " << sequenceLength << endl;
-    // cout << "Sequence: " << endl;
-    // for(int i = 0; i < sequenceLength; i++)
-    // {
-    //     int length = sequence[i].bufferSize;
-    //     for(int j = 0; j < length; j++)
-    //     {
-    //         cout << sequence[i].buffer[j] << " ";
-    //     }
-    //     cout << endl;
-    //     cout << sequence[i].reward << endl;
-    // }
-    // cout << endl;
-    // End Debug
-
+    
     clock_t startTime = clock();
 
     TokenSlot mostRewardingSlot(bufferSize);
@@ -217,10 +121,6 @@ CrackData getOptimalSolution(int bufferSize, int width, int height, MarkableToke
         0, 0,
         &mostRewardingSlot
     );
-
-    // Debug
-    // debugMatrixSlot(matrix, width, height, mostRewardingSlot);
-    // mostRewardingSlot.Debug();
 
     // Output
     CrackData solveData = {mostRewardingSlot, maxReward, clock() - startTime};
